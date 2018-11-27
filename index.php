@@ -1,4 +1,11 @@
 <?php
+session_start();
+if(!isset($_SESSION["login"])){
+    echo $_SESSION["login"];
+    header("Location:login.php");
+    exit;
+}
+
 require 'functions.php';
 
 $mahasiswa=query("SELECT * FROM mahasiswa");
@@ -31,6 +38,9 @@ if(isset($_POST["cari"])){
             </button>
             <a class="navbar-brand" class="active" href="index.php">Daftar Mahasiswa</a>
         </div>
+        <!-- <a href="logout.php">Logout</a>
+    <a href="tambah_data.php">Tambah Data Mahasiswa</a>
+    <br><br> -->
     
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse navbar-ex1-collapse">
