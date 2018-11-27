@@ -1,16 +1,29 @@
 <?php
 session_start();
-if(isset($_COOKIE["login"])){
-    if($_COOKIE['login']=='true'){
-        $_SESSION['login']=true;
+// if(isset($_COOKIE["login"])){
+//     if($_COOKIE['login']=='true'){
+//         $_SESSION['login']=true;
+//     }
+// }
+
+// if(isset($_SESSION["login"])){
+//     header("Location:index.php");
+//     exit;
+// }
+
+require 'functions.php';
+
+if(isset($_COOKIE['id']) && isset($_COOKIE['username'])){
+    $id=$_COOKIE['id'];
+    $key=$_COOKIE['key'];
+
+    $result=mysqli_query($conn, "SELECT username FROM user WHERE id=$id");
+    $row=mysqli_fetch_assoc($result);
+
+    if($key === hash('sha256', $row['username'])){
+        $_SESSION['login'] = true;
     }
 }
-
-if(isset($_SESSION["login"])){
-    header("Location:index.php");
-    exit;
-}
-require 'functions.php';
 
 if(isset($_POST["login"])){
     $username=$_POST["username"];
@@ -23,7 +36,9 @@ if(isset($_POST["login"])){
         if(password_verify($password, $row["password"])){
             $_SESSION["login"]=true;
             if(isset($_POST['remember'])){
-                setcookie('login','true',time()+60);
+                setcookie('id', $row['id'], time()+60);
+                setcookie('key', hash(sha256, $row['username']), time()+60);
+                // setcookie('login','true',time()+60);
             }
             header("Location:index.php");
             exit;
