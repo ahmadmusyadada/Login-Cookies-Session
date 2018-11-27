@@ -1,5 +1,11 @@
 <?php
 session_start();
+if(isset($_COOKIE["login"])){
+    if($_COOKIE['login']=='true'){
+        $_SESSION['login']=true;
+    }
+}
+
 if(isset($_SESSION["login"])){
     header("Location:index.php");
     exit;
@@ -16,6 +22,9 @@ if(isset($_POST["login"])){
         $row=mysqli_fetch_assoc($result);
         if(password_verify($password, $row["password"])){
             $_SESSION["login"]=true;
+            if(isset($_POST['remember'])){
+                setcookie('login','true',time()+60);
+            }
             header("Location:index.php");
             exit;
         }
@@ -49,6 +58,10 @@ if(isset($_POST["login"])){
         <li>
             <label for="password">Password</label>
             <input type="password" name="password" id="password">
+        </li>
+        <li>
+            <input type="checkbox" name="remember" id="remember">
+            <label for="remember">Remember Me</label>
         </li>
         <li>
             <button type="submit" name="login">Login</button>
