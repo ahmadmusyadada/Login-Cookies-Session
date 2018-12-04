@@ -1,6 +1,13 @@
 <?php
     require 'functions.php';
 
+    session_start();
+    if(!isset($_SESSION["login"])){
+        echo $_SESSION["login"];
+        header("Location:login.php");
+        exit;
+    }
+
     if(isset($_POST['submit'])){
         // var_dump($_POST);
         // var_dump($_FILES);
