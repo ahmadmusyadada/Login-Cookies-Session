@@ -17,7 +17,7 @@ if(isset($_COOKIE['id']) && isset($_COOKIE['username'])){
     $id=$_COOKIE['id'];
     $key=$_COOKIE['key'];
 
-    $result=mysqli_query($conn, "SELECT username FROM user WHERE id=$id");
+    $result=mysqli_query($conn, "SELECT username FROM users WHERE id=$id");
     $row=mysqli_fetch_assoc($result);
 
     if($key === hash('sha256', $row['username'])){
